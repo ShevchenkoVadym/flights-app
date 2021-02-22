@@ -1,0 +1,47 @@
+# Run docker-compose build
+# Run docker-compose up
+version: '2'
+
+services:
+  nginx:
+    container_name: nginx_container
+    restart: always
+    image: nginx
+    build:
+      context: .
+      dockerfile: nginx/Dockerfile
+    volumes:
+     - ./client/dist:/usr/share/nginx/html
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - flask_api
+
+  flask_api:
+    container_name: flask_api_container
+    restart: always
+    image: flask
+    build: ./server
+    volumes:
+    - ./server:/usr/src/app/server
+    env_file:
+     - .env
+
+  data:
+   container_name: app_data_container
+   image: postgres:9.6
+   volumes:
+     - /var/lib/postgresql
+   command: "true"
+
+  postgres:
+   container_name: postgresql_container
+   restart: always
+   build: ./postgresql
+   volumes_from:
+     - data
+   ports:
+     - "5432:5432"
+   env_file:
+     - .env
