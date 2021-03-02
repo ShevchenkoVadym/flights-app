@@ -1,6 +1,6 @@
 <template>
     <div>
-        <ul v-for="flight in next_flights" v-bind:key="flight" class="left-list">
+        <ul v-for="flight in previous_flights" v-bind:key="flight" class="left-list">
             <li v-if="flight.departure" class="left-list__item">
                 <div class="main">
                     <div class="table-left">
@@ -16,7 +16,7 @@
                     </div>
                     <div class="table-center">
                         <div class="table-center__top">
-                            Today
+                            Yesterday
                         </div>
                         <div class="table-center__center">
                             {{ flight.time_departure }}
@@ -35,7 +35,7 @@
                     </div>
                 </div>
             </li>
-
+    
             <li class="left-list__item" v-else>
                 <div class="main">
                     <div class="table-left">
@@ -51,7 +51,7 @@
                     </div>
                     <div class="table-center">
                         <div class="table-center__top">
-                            Today
+                            Yesterday
                         </div>
                         <div class="table-center__center">
                             {{ flight.time_arrival }}
@@ -76,18 +76,18 @@
 
 <script>
     export default {
-        name: 'NextFlights',
+        name: 'PreviousFlights',
         data () {
             return {
-                next_flights_api: '/next_flights',
-                next_flights: []
+                previous_flights_api: '/previous_flights',
+                previous_flights: []
             }
         },
         mounted (){
             this.$api
-                .get(this.next_flights_api)
+                .get(this.previous_flights_api)
                 .then(response => {
-                    this.next_flights = response.data
+                    this.previous_flights = response.data
                 });
         }
     }

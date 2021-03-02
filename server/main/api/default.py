@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from flask import Blueprint, jsonify
 from flask import request
+import flask
 import datetime
 from datetime import timedelta
 import requests
@@ -12,6 +13,7 @@ time_flights_list_updated_ts = 0
 actual_flights_list = []
 DAYS_FLIGHTS_API = 2
 
+
 @route.route("/api/next_flight", methods=['GET'])
 def get_next_flight():
     actual_time_ts = datetime.datetime.now().timestamp()
@@ -21,7 +23,11 @@ def get_next_flight():
     if len(sorted_by_time) == 0:
         return jsonify({"msg":f"There are no flights in the next {DAYS_FLIGHTS_API} days"})
     next_flight = sorted_by_time[0]
-    return json.dumps(next_flight)
+
+    response = flask.jsonify(next_flight)
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
+
 
 @route.route("/api/next_flights", methods=['GET'])
 def next_several_flights():
@@ -32,7 +38,11 @@ def next_several_flights():
     flights = get_actual_flights_list()
     next_flights = list(filter(lambda flight: flight['time_ts'] > actual_time_ts, flights))
     sorted_by_time = sorted(next_flights, key = lambda i: i['time_ts'])
-    return json.dumps(sorted_by_time[:amount])
+
+    response = flask.jsonify(sorted_by_time[:amount])
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
+
 
 @route.route("/api/previous_flights", methods=['GET'])
 def next_previous_flights():
@@ -43,7 +53,11 @@ def next_previous_flights():
     flights = get_actual_flights_list()
     next_flights = list(filter(lambda flight: flight['time_ts'] < actual_time_ts, flights))
     sorted_by_time = sorted(next_flights, key = lambda i: i['time_ts'])
-    return json.dumps(sorted_by_time[:amount])
+
+    response = flask.jsonify(sorted_by_time[:amount])
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
+
 
 def get_actual_flights_list():
     global time_flights_list_updated_ts
