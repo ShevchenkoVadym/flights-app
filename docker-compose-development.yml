@@ -1,23 +1,10 @@
-# Run docker-compose build
-# Run docker-compose up
+# Run 'docker-compose -f docker-compose-development.yml build'
+# Run 'docker-compose -f docker-compose-development.yml up'
+# check http://localhost:9666/api/flights/next - should be response
+# go to client side and run the frontend (flights-app\client\README.md)
 version: '2'
 
 services:
-  nginx:
-    container_name: nginx_container
-    restart: always
-    image: nginx
-    build:
-      context: .
-      dockerfile: nginx/Dockerfile
-    volumes:
-     - ./client/dist:/usr/share/nginx/html
-    ports:
-      - "80:80"
-      - "443:443"
-    depends_on:
-      - spring_api
-
   spring_api:
     container_name: spring_api_container
     restart: always

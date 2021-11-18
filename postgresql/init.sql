@@ -1,1 +1,1 @@
-CREATE DATABASE airplanes;
+CREATE DATABASE flights;
