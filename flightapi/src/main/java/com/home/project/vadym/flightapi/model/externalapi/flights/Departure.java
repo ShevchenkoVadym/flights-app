@@ -49,6 +49,13 @@ public class Departure extends Flight {
 
     @Override
     public Date getFlightTime() {
-        return getTimeDepExpectCalc();
+        Date timeTakeofFact = getTimeTakeofFact();
+        Date timeDepExpectCalc = getTimeDepExpectCalc();
+        if(timeTakeofFact != null){
+            return timeTakeofFact;
+        } else if(timeDepExpectCalc != null){
+            return timeDepExpectCalc;
+        }
+        return new Date();
     }
 }

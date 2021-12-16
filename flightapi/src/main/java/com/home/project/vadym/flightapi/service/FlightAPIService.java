@@ -5,6 +5,7 @@ import com.home.project.vadym.flightapi.logic.FlightsCache;
 import com.home.project.vadym.flightapi.model.externalapi.flights.Flight;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -16,8 +17,10 @@ import java.util.stream.Collectors;
 @Service
 public class FlightAPIService {
 
+    @Autowired
+    private FlightsCache flightsCache;
+
     private final Logger log = LoggerFactory.getLogger(FlightAPIService.class);
-    private FlightsCache flightsCache = FlightsCache.getInstance();
 
     public List<Flight> getNextFlights() {
         Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());

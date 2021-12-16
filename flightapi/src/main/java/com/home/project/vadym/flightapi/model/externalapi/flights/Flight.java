@@ -55,7 +55,6 @@ abstract public class Flight implements Comparable<Flight>{
 
     public abstract Date getFlightTime();
 
-
     @Override
     public int compareTo(Flight flight) {
         return this.getFlightTime().compareTo(flight.getFlightTime());

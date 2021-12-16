@@ -1,71 +1,20 @@
-<template v-if="next_flight.departure">
-    <div class="main">
-        <div class="table-left">
-            <div class="table-left__top">
-                Departure
-            </div>
-            <div class="table-left__center">
-                to
-            </div>
-            <div class="table-left__bottom">
-                {{ next_flight.airport_to }}
-            </div>
-        </div>
-        <div class="table-center">
-            <div class="table-center__top">
-                Today
-            </div>
-            <div class="table-center__center">
-                {{ next_flight.time_departure }}
-            </div>
-        </div>
-        <div class="table-right">
-            <div class="table-right__top">
-                Flight #
-            </div>
-            <div class="table-right__center">
-                {{ next_flight.flight_number }}
-            </div>
-            <div class="table-right__bottom">
-                Big plane
-            </div>
-        </div>
+<template>
+<div class="row">
+    <div class="col-md-3">
+      <div style="background:green;">{{ showtime.airline.en.name }}</div>
+      <div style="background:blue;">Column 2</div>
+      <div style="background:yellow;">Column 3</div>
     </div>
-</template>
-
-<template v-else>
-    <div class="main">
-        <div class="table-left" >
-            <div class="table-left__top">
-                Arrival
-            </div>
-            <div class="table-left__center">
-                from
-            </div>
-            <div class="table-left__bottom">
-                {{ next_flight.airport_to }}
-            </div>
-        </div>
-        <div class="table-center">
-            <div class="table-center__top">
-                Today
-            </div>
-            <div class="table-center__center">
-                {{ next_flight.time_arrival }}
-            </div>
-        </div>
-        <div class="table-right">
-            <div class="table-right__top">
-                Flight #
-            </div>
-            <div class="table-right__center">
-                {{ next_flight.flight_number }}
-            </div>
-            <div class="table-right__bottom">
-                Big plane
-            </div>
-        </div>
+    <div class="col-md-6">
+      <div style="background:green;">{{ showtime.codeShareData[0].codeShare }}</div>
+      <div style="background:white;">{{ showtime.flightTime }}</div>
     </div>
+    <div class="col-md-3">
+      <div style="background:green;">Column 6</div>
+      <div style="background:blue;">Column 7</div>
+      <div style="background:yellow;">Column 8</div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -73,15 +22,15 @@
         name: 'MainComponent',
         data () {
             return {
-                next_flight_api: '/next_flight',
-                next_flight: {}
+                showtime_api: '/showtime',
+                showtime: {}
             }
         },
         mounted (){
             this.$api
-                .get(this.next_flight_api)
+                .get(this.showtime_api)
                 .then(response => {
-                    this.next_flight = response.data
+                    this.showtime = response.data
                 });
         }
     }

@@ -1,6 +1,8 @@
 package com.home.project.vadym.flightapi.controller;
 
 import com.home.project.vadym.flightapi.exceptions.NoFlightsFoundException;
+import com.home.project.vadym.flightapi.model.Mapper;
+import com.home.project.vadym.flightapi.model.frontend.FlightDTO;
 import com.home.project.vadym.flightapi.service.FlightAPIService;
 import com.home.project.vadym.flightapi.model.externalapi.flights.Flight;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+import static java.util.stream.Collectors.toList;
+
 @RestController
 @RequestMapping("/api/flights")
 public class FlightsController {
@@ -19,11 +23,16 @@ public class FlightsController {
     @Autowired
     private FlightAPIService flightAPIService;
 
+    @Autowired
+    private Mapper mapper;
+
     @CrossOrigin(origins = "http://localhost:8080")
     @GetMapping("next")
     public ResponseEntity getNextFlights(){
         try {
-            List<Flight> nextFlights = flightAPIService.getNextFlights();
+            List<FlightDTO> nextFlights = flightAPIService.getNextFlights().stream()
+                    .map(mapper::toDTO).collect(toList());
+
             return ResponseEntity.ok(nextFlights);
         } catch (Exception e){
             return ResponseEntity.badRequest().body("Something went wrong!");
@@ -34,7 +43,9 @@ public class FlightsController {
     @GetMapping("past")
     public ResponseEntity getPastFlights(){
         try {
-            List<Flight> pastFlights = flightAPIService.getPastFlights();
+            List<FlightDTO> pastFlights = flightAPIService.getPastFlights().stream()
+                    .map(mapper::toDTO).collect(toList());
+
             return ResponseEntity.ok(pastFlights);
         } catch (Exception e){
             return ResponseEntity.badRequest().body("Something went wrong!");
@@ -45,7 +56,7 @@ public class FlightsController {
     @GetMapping("showtime")
     public ResponseEntity getAnyFlightSoon(){
         try {
-            Flight nextAnyFlight = flightAPIService.getAnyFlightSoon();
+            FlightDTO nextAnyFlight = mapper.toDTO(flightAPIService.getAnyFlightSoon());
             return ResponseEntity.ok(nextAnyFlight);
         } catch (NoFlightsFoundException e){
             return ResponseEntity.ok().body(e);

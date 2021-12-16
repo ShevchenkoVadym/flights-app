@@ -3,30 +3,25 @@ package com.home.project.vadym.flightapi.logic;
 import com.home.project.vadym.flightapi.model.externalapi.flights.Flight;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+@Component
 public class FlightsCache {
 
+    @Autowired
+    private SikorskyAPI sikorskyAPI;
+
     private final Logger log = LoggerFactory.getLogger(FlightsCache.class);
-    private static final FlightsCache FLIGHTS_CACHE = new FlightsCache();
     private final byte DELTA_RETRIEVAL_TIME = 30; // minutes
     private Timestamp lastRetrievalTime;
 
     private List<Flight> flightsCache;
-    private SikorskyAPI sikorskyAPI;
-
-
-    private FlightsCache() {
-        this.sikorskyAPI = new SikorskyAPI();
-    }
-
-    public static FlightsCache getInstance() {
-        return FLIGHTS_CACHE;
-    }
 
     public List<Flight> getCachedFlightsList() {
         Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());

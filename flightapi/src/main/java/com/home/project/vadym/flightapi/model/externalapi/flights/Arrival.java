@@ -45,7 +45,7 @@ public class Arrival extends Flight {
     @Override
     public int compareTo(Flight flight) {
         return Comparator.comparing(Flight::getFlightTime)
-                .thenComparing(Flight::getTimeToStand)
+                .thenComparing(Flight::getTimeToStand) // ??  sure it is correct? //TODO
                 .compare(this, flight);
     }
 

@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-class CodeShareData {
+public class CodeShareData {
 
     private String icao;
     private String codeShare;
