@@ -2,7 +2,6 @@ package com.home.project.vadym.flightapi.model.externalapi.flights;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.home.project.vadym.flightapi.model.externalapi.airline.Airline;
-import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 

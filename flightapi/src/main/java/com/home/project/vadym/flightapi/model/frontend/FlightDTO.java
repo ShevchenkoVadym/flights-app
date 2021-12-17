@@ -1,10 +1,8 @@
 package com.home.project.vadym.flightapi.model.frontend;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 public abstract class FlightDTO {
 
     private FlightType flight;

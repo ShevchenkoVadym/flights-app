@@ -4,8 +4,7 @@ import com.home.project.vadym.flightapi.model.externalapi.JsonRootContainer;
 import com.home.project.vadym.flightapi.model.externalapi.flights.Arrival;
 import com.home.project.vadym.flightapi.model.externalapi.flights.Departure;
 import com.home.project.vadym.flightapi.model.externalapi.flights.Flight;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -15,10 +14,10 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Component
 class SikorskyAPI {
 
-    private final Logger log = LoggerFactory.getLogger(SikorskyAPI.class);
     private final String PUBLIC_URL_API = "https://api.iev.aero/api/flights/";
 
     private final RestTemplate restTemplate = new RestTemplateBuilder().build();

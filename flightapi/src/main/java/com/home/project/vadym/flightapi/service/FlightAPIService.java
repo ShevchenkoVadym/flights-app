@@ -3,6 +3,7 @@ package com.home.project.vadym.flightapi.service;
 import com.home.project.vadym.flightapi.exceptions.NoFlightsFoundException;
 import com.home.project.vadym.flightapi.logic.FlightsCache;
 import com.home.project.vadym.flightapi.model.externalapi.flights.Flight;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,13 +15,12 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 public class FlightAPIService {
 
     @Autowired
     private FlightsCache flightsCache;
-
-    private final Logger log = LoggerFactory.getLogger(FlightAPIService.class);
 
     public List<Flight> getNextFlights() {
         Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());

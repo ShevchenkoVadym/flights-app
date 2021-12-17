@@ -1,5 +1,7 @@
 package com.home.project.vadym.flightapi.model;
 
+import com.home.project.vadym.flightapi.model.entity.ArrivalEntity;
+import com.home.project.vadym.flightapi.model.entity.DepartureEntity;
 import com.home.project.vadym.flightapi.model.externalapi.flights.Arrival;
 import com.home.project.vadym.flightapi.model.externalapi.flights.Departure;
 import com.home.project.vadym.flightapi.model.externalapi.flights.Flight;
@@ -49,4 +51,35 @@ public class Mapper {
     }
 
 
+    public DepartureEntity toEntity(Departure departure) {
+        DepartureEntity departureEntity = new DepartureEntity();
+        departureEntity.setFlightName(Objects.requireNonNull(departure.getCodeShareData().stream().findFirst().orElse(null)).getCodeShare());
+        departureEntity.setAirCompanyName(departure.getAirline().getEn().getName());
+        departureEntity.setAirplaneName(departure.getPlaneTypeIDName());
+        departureEntity.setTerminal(departure.getTerm());
+        departureEntity.setDepartureTo(departure.getAirportToIDName());
+        if(departure.getTimeTakeofFact() != null) {
+            departureEntity.setShowTime(departure.getTimeTakeofFact());
+        } else {
+            departureEntity.setShowTime(departure.getFlightTime());
+        }
+        return departureEntity;
+    }
+
+    public ArrivalEntity toEntity(Arrival arrival) {
+        ArrivalEntity arrivalEntity = new ArrivalEntity();
+        arrivalEntity.setFlightName(Objects.requireNonNull(arrival.getCodeShareData().stream().findFirst().orElse(null)).getCodeShare());
+        arrivalEntity.setAirCompanyName(arrival.getAirline().getEn().getName());
+        arrivalEntity.setAirplaneName(arrival.getPlaneTypeIDName());
+        arrivalEntity.setTerminal(arrival.getTerm());
+        arrivalEntity.setArrivalFrom(arrival.getAirportFromIDName());
+
+        if(arrival.getTimeLandFact() != null){
+            arrivalEntity.setShowTime(arrival.getTimeLandFact());
+        } else {
+            arrivalEntity.setShowTime(arrival.getFlightTime());
+        }
+
+        return arrivalEntity;
+    }
 }

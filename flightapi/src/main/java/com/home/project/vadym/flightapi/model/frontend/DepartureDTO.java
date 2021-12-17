@@ -1,12 +1,10 @@
 package com.home.project.vadym.flightapi.model.frontend;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import java.util.Date;
 
-@Getter
-@Setter
+@Data
 public class DepartureDTO extends FlightDTO{
 
     private String gateNumber;

@@ -4,7 +4,7 @@ import com.home.project.vadym.flightapi.exceptions.NoFlightsFoundException;
 import com.home.project.vadym.flightapi.model.Mapper;
 import com.home.project.vadym.flightapi.model.frontend.FlightDTO;
 import com.home.project.vadym.flightapi.service.FlightAPIService;
-import com.home.project.vadym.flightapi.model.externalapi.flights.Flight;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -16,6 +16,7 @@ import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/flights")
 public class FlightsController {

@@ -1,6 +1,7 @@
 package com.home.project.vadym.flightapi.logic;
 
 import com.home.project.vadym.flightapi.model.externalapi.flights.Flight;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,13 +12,13 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+@Slf4j
 @Component
 public class FlightsCache {
 
     @Autowired
     private SikorskyAPI sikorskyAPI;
 
-    private final Logger log = LoggerFactory.getLogger(FlightsCache.class);
     private final byte DELTA_RETRIEVAL_TIME = 30; // minutes
     private Timestamp lastRetrievalTime;
 
