@@ -1,6 +1,6 @@
 package com.home.project.vadym.flightapi.data;
 
-import com.home.project.vadym.flightapi.data.jdbc.JDBCFlightRepository;
+import com.home.project.vadym.flightapi.data.jpa.FlightsService;
 import com.home.project.vadym.flightapi.model.Mapper;
 import com.home.project.vadym.flightapi.model.entity.ArrivalEntity;
 import com.home.project.vadym.flightapi.model.entity.DepartureEntity;
@@ -28,7 +28,7 @@ public class PersistenceData {
     private Mapper mapper;
 
     @Autowired
-    private JDBCFlightRepository flightRepository;
+    private FlightsService flightsService;
 
     @PostConstruct
     private void init() {
@@ -53,8 +53,8 @@ public class PersistenceData {
                     .map(arr -> mapper.toEntity((Arrival) arr)).collect(Collectors.toList());
             log.info("Filtered Arrival rows: " + arrivalRows.size());
 
-            departureRows.forEach(flightRepository::save);
-            arrivalRows.forEach(flightRepository::save);
+            arrivalRows.forEach(flightsService::createOrUpdate);
+            departureRows.forEach(flightsService::createOrUpdate);
 
             log.info("Database data has been updated.");
 

@@ -53,32 +53,36 @@ public class Mapper {
 
     public DepartureEntity toEntity(Departure departure) {
         DepartureEntity departureEntity = new DepartureEntity();
+        departureEntity.setId(departure.getID());
         departureEntity.setFlightName(Objects.requireNonNull(departure.getCodeShareData().stream().findFirst().orElse(null)).getCodeShare());
         departureEntity.setAirCompanyName(departure.getAirline().getEn().getName());
         departureEntity.setAirplaneName(departure.getPlaneTypeIDName());
         departureEntity.setTerminal(departure.getTerm());
         departureEntity.setDepartureTo(departure.getAirportToIDName());
-        if(departure.getTimeTakeofFact() != null) {
-            departureEntity.setShowTime(departure.getTimeTakeofFact());
-        } else {
-            departureEntity.setShowTime(departure.getFlightTime());
-        }
+        departureEntity.setTimeBoard(departure.getTimeBoard());
+        departureEntity.setTimeDepartureSchedule(departure.getTimeDepShedule());
+        departureEntity.setTimeDepartureExpCalc(departure.getTimeDepExpectCalc());
+        departureEntity.setTimeDepartureFact(departure.getTimeDepFact());
+        departureEntity.setTimeTakeOffFact(departure.getTimeTakeofFact());
+        departureEntity.setTimeToStand(departure.getTimeToStand());
+        departureEntity.setTimeLandFact(departure.getTimeLandFact());
+
         return departureEntity;
     }
 
     public ArrivalEntity toEntity(Arrival arrival) {
         ArrivalEntity arrivalEntity = new ArrivalEntity();
+        arrivalEntity.setId(arrival.getID());
         arrivalEntity.setFlightName(Objects.requireNonNull(arrival.getCodeShareData().stream().findFirst().orElse(null)).getCodeShare());
         arrivalEntity.setAirCompanyName(arrival.getAirline().getEn().getName());
         arrivalEntity.setAirplaneName(arrival.getPlaneTypeIDName());
         arrivalEntity.setTerminal(arrival.getTerm());
         arrivalEntity.setArrivalFrom(arrival.getAirportFromIDName());
-
-        if(arrival.getTimeLandFact() != null){
-            arrivalEntity.setShowTime(arrival.getTimeLandFact());
-        } else {
-            arrivalEntity.setShowTime(arrival.getFlightTime());
-        }
+        arrivalEntity.setTimeArrSchedule(arrival.getTimeArrShedule());
+        arrivalEntity.setTimeArrExpectCalc(arrival.getTimeArrExpectCalc());
+        arrivalEntity.setTimeLandCalc(arrival.getTimeLandCalc());
+        arrivalEntity.setTimeStandCalc(arrival.getTimeStandCalc());
+        arrivalEntity.setTimeStandFact(arrival.getTimeStandFact());
 
         return arrivalEntity;
     }
