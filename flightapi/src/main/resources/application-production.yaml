@@ -1,0 +1,31 @@
+server:
+    port: 8889
+#        ssl:
+#            key-store: file://C:/Users/vadym.shevchenko/mykeys.jks
+#            key-store-password: fszDw09w
+#            key-password: fszDw09w
+
+spring:
+    datasource:
+        url: jdbc:postgresql://localhost:5432/flights
+        username: postgres
+        password: postgres
+        driver-class-name: org.postgresql.Driver
+    jpa:
+        database: postgresql
+        database-platform: org.hibernate.dialect.PostgreSQL10Dialect
+        show-sql: true
+        generate-ddl: true
+        hibernate:
+            ddl-auto: update
+            jdbc.lob.non_contextual_creation: true
+
+#logging:
+#    level:
+#    root: WARN
+#    org.springframework.security: DEBUG
+
+
+#    Application related properties
+flight.cache.property.deltaRetrievalTime: 15
+persistence.data.property.timePeriod: 60

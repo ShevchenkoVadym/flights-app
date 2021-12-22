@@ -1,9 +1,10 @@
 package com.home.project.vadym.flightapi.data.jpa;
 
-import com.home.project.vadym.flightapi.model.entity.ArrivalEntity;
+import com.home.project.vadym.flightapi.model.Arrival;
 import org.springframework.data.repository.CrudRepository;
 
-public interface ArrivalRepository extends CrudRepository<ArrivalEntity, Long> {
+public interface ArrivalRepository extends CrudRepository<Arrival, Long> {
 
-    ArrivalEntity findById(long id);
+    Arrival findById(long id);
+
 }

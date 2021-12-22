@@ -1,10 +1,9 @@
 package com.home.project.vadym.flightapi.logic;
 
-import com.home.project.vadym.flightapi.model.externalapi.flights.Flight;
+import com.home.project.vadym.flightapi.model.Flight;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 import java.sql.Timestamp;
@@ -14,12 +13,14 @@ import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Component
+@ConfigurationProperties(prefix="flight.cache.property")
 public class FlightsCache {
 
     @Autowired
     private SikorskyAPI sikorskyAPI;
 
-    private final byte DELTA_RETRIEVAL_TIME = 30; // minutes
+    private byte deltaRetrievalTime = 10; // minutes
+
     private Timestamp lastRetrievalTime;
 
     private List<Flight> flightsCache;
@@ -35,9 +36,13 @@ public class FlightsCache {
         return flightsCache;
     }
 
+    public void setDeltaRetrievalTime(byte deltaRetrievalTime) {
+        this.deltaRetrievalTime = deltaRetrievalTime;
+    }
+
     private boolean isTimeToRetrieveTheActualList(Timestamp currentTimestamp) {
         Timestamp lastRetrievalWithDelta = new Timestamp(lastRetrievalTime.getTime() +
-                        TimeUnit.MINUTES.toMillis(DELTA_RETRIEVAL_TIME));
+                        TimeUnit.MINUTES.toMillis(deltaRetrievalTime));
 
         return currentTimestamp.after(lastRetrievalWithDelta);
     }

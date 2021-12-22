@@ -1,11 +1,13 @@
 package com.home.project.vadym.flightapi.logic;
 
-import com.home.project.vadym.flightapi.model.externalapi.JsonRootContainer;
-import com.home.project.vadym.flightapi.model.externalapi.flights.Arrival;
-import com.home.project.vadym.flightapi.model.externalapi.flights.Departure;
-import com.home.project.vadym.flightapi.model.externalapi.flights.Flight;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.home.project.vadym.flightapi.model.Arrival;
+import com.home.project.vadym.flightapi.model.Departure;
+import com.home.project.vadym.flightapi.model.Flight;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
@@ -20,9 +22,13 @@ class SikorskyAPI {
 
     private final String PUBLIC_URL_API = "https://api.iev.aero/api/flights/";
 
-    private final RestTemplate restTemplate = new RestTemplateBuilder().build();
+    @Autowired
+    private ObjectMapper objectMapper;
 
-    List<Flight> getFlights(LocalDate flightsDate) {
+    @Autowired
+    private RestTemplate restTemplate;
+
+    public List<Flight> getFlights(LocalDate flightsDate) {
         if(flightsDate == null){
             log.error("Illegal argument passed to getFlights method");
             throw new IllegalArgumentException("Null value passed as flight day");
@@ -30,20 +36,58 @@ class SikorskyAPI {
         String dateForAPI = flightsDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
         String requestURL = PUBLIC_URL_API + dateForAPI;
         log.info(String.format("Send GET request to the external API: %s", requestURL));
-        JsonRootContainer response = restTemplate.getForObject(requestURL, JsonRootContainer.class);
-        return retrievalFlights(response);
+        final String response = restTemplate.getForObject(requestURL, String.class);
+        return this.parseResponse(response);
     }
 
-    private List<Flight> retrievalFlights(JsonRootContainer response) {
-        List<Flight> result = new ArrayList<>();
-        if(response != null && response.getBody() != null) {
-            List<Arrival> arrivals = response.getBody().getArrival();
-            List<Departure> departure = response.getBody().getDeparture();
-            log.info(String.format("Retrieved %d arrival flights", arrivals.size()));
-            log.info(String.format("Retrieved %d departure flights", departure.size()));
-            result.addAll(arrivals);
-            result.addAll(departure);
+    private List<Flight> parseResponse(String json) {
+        List<Flight> flightsList = new ArrayList<>();
+        try {
+            flightsList = parseJson(json);
+        } catch (JsonProcessingException | JSONValidatorException e) {
+            log.error(String.format("Cannot parse the JSON. Exception: \n%s", e));
         }
-        return result;
+        return flightsList;
+    }
+
+    private List<Flight> parseJson(String json) throws JsonProcessingException, JSONValidatorException {
+        if(json == null || json.isEmpty()){
+            throw new JSONValidatorException("JSON parameter can not be null or empty.");
+        }
+        List<Flight> flightsList = new ArrayList<>();
+
+
+        JsonNode jsonNodeRoot = objectMapper.readTree(json);
+        JsonNode body = getNestedJSON(jsonNodeRoot, "body");
+
+        JsonNode arrivalArray = getNestedJSON(body, "arrival");
+        JsonNode departureArray = getNestedJSON(body, "departure");
+
+        Arrival[] arrivals = objectMapper.readValue(arrivalArray.toString(), Arrival[].class);
+        Departure[] departures = objectMapper.readValue(departureArray.toString(), Departure[].class);
+        log.info(String.format("Retrieved %d arrival flights", arrivals.length));
+        log.info(String.format("Retrieved %d departure flights", arrivals.length));
+        flightsList.addAll(List.of(arrivals));
+        flightsList.addAll(List.of(departures));
+        return flightsList;
+    }
+
+    private JsonNode getNestedJSON(JsonNode jsonNode, String key) throws JSONValidatorException {
+        JsonNode nestedJSON = jsonNode.get(key);
+
+        if(nestedJSON == null){
+            throw new JSONValidatorException(
+                    String.format("JSON object is 'null' for the key '%s' from provided JSON '%s'",
+                            key,
+                            jsonNode.toPrettyString()));
+        }
+
+        return nestedJSON;
+    }
+
+    private static class JSONValidatorException extends Throwable {
+        public JSONValidatorException(String s) {
+            super(s);
+        }
     }
 }

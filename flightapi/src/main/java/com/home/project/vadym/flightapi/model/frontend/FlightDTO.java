@@ -5,16 +5,8 @@ import lombok.Data;
 @Data
 public abstract class FlightDTO {
 
-    private FlightType flight;
-    private String flightName;
-    private String flightType;
-    private String flightCategory;
-    private String airCompanyName;
-    private String airplaneName;
-    private String terminal;
-
     public enum FlightType {
-        DEPARTURE, ARRIVAL
+        Departure, Arrival
     }
 
 }
