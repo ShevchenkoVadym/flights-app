@@ -3,9 +3,7 @@ package com.home.project.vadym.flightapi.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.home.project.vadym.flightapi.model.frontend.DepartureDTO;
 import com.home.project.vadym.flightapi.model.frontend.FlightDTO;
-import com.sun.istack.NotNull;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -13,7 +11,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-@EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
 @Entity

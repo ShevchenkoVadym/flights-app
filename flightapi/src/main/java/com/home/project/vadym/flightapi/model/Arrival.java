@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.home.project.vadym.flightapi.model.frontend.ArrivalDTO;
 import com.home.project.vadym.flightapi.model.frontend.FlightDTO;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -12,7 +11,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-@EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
 @Entity

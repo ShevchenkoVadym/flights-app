@@ -18,13 +18,14 @@ import static java.util.stream.Collectors.toList;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/flights")
+@RequestMapping(path="/api/flights",
+                produces="application/json")
+@CrossOrigin(origins="*")
 public class FlightsController {
 
     @Autowired
     private FlightAPIService flightAPIService;
 
-    @CrossOrigin(origins = "http://localhost:8080")
     @GetMapping("next")
     public ResponseEntity getNextFlights(){
         try {
@@ -36,7 +37,6 @@ public class FlightsController {
         }
     }
 
-    @CrossOrigin(origins = "http://localhost:8080")
     @GetMapping("past")
     public ResponseEntity getPastFlights(){
         try {
@@ -49,7 +49,6 @@ public class FlightsController {
         }
     }
 
-    @CrossOrigin(origins = "http://localhost:8080")
     @GetMapping("showtime")
     public ResponseEntity getAnyFlightSoon(){
         try {
